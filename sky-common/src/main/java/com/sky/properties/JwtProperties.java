@@ -9,16 +9,21 @@ import org.springframework.stereotype.Component;
 @Data
 public class JwtProperties {
 
+    // 管理端员工生成jwt令牌相关配置
     /**
-     * 管理端员工生成jwt令牌相关配置
+     * jwt秘钥
      */
     private String adminSecretKey;
+    /**
+     * jwt过期时间
+     */
     private long adminTtl;
+    /**
+     * jwt令牌名称
+     */
     private String adminTokenName;
 
-    /**
-     * 用户端微信用户生成jwt令牌相关配置
-     */
+    // 用户端微信用户生成jwt令牌相关配置
     private String userSecretKey;
     private long userTtl;
     private String userTokenName;

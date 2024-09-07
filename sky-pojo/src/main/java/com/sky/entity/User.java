@@ -1,22 +1,24 @@
 package com.sky.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(description = "用户实体类")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    @ApiModelProperty(value = "主键",required = true)
     private Long id;
 
     //微信用户唯一标识
