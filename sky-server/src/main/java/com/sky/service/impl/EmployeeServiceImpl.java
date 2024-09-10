@@ -1,23 +1,29 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import com.sky.vo.QueryEmpVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -80,6 +86,57 @@ public class EmployeeServiceImpl implements EmployeeService {
         emp.setCreateUser(BaseContext.getCurrentId());
         emp.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.addUser(emp);
+    }
+
+    @Override
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        //分页查询
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+        long total = page.getTotal();
+        List<Employee> result = page.getResult();
+        return new PageResult(total, result);
+    }
+
+    /**
+     * 修改员工账号状态
+     * @param id 员工ID
+     * @param status 账号状态
+     */
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        Employee emp = Employee.builder()
+                .status(status)
+                .id(id)
+                .updateTime(LocalDateTime.now())
+                .build();
+
+        employeeMapper.updateStatus(emp);
+    }
+
+    /**
+     * 根据ID查询员工信息
+     * @param id id
+     * @return QueryEmpVO
+     */
+    @Override
+    public QueryEmpVO getEmpByID(Long id) {
+        return employeeMapper.queryEmpByID(id);
+    }
+
+    /**
+     * 修改员工信息
+     * @param employeeDTO 员工信息
+     */
+    @Override
+    public void updateEmp(EmployeeDTO employeeDTO) {
+        Employee emp = new Employee();
+        //将数据模型中的数据拷贝到实体对象中
+        BeanUtils.copyProperties(employeeDTO, emp);
+        emp.setUpdateTime(LocalDateTime.now());
+        emp.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.updateUser(emp);
     }
 
 }

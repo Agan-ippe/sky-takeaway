@@ -32,4 +32,11 @@ public class EmployeeDTO implements Serializable {
     @ApiModelProperty(value = "身份证号", required = true)
     private String idNumber;
 
+    public EmployeeDTO(String username, String name, String phone, String sex, String idNumber) {
+        this.username = username;
+        this.name = name;
+        this.phone = phone;
+        this.sex = sex;
+        this.idNumber = idNumber;
+    }
 }
