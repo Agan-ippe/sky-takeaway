@@ -1,5 +1,6 @@
 package com.sky.service;
 
+import com.sky.dto.EmpChangePwdDTO;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -53,4 +54,10 @@ public interface EmployeeService {
      * @param employee 员工信息
      */
     void updateEmp(EmployeeDTO employee);
+
+    /**
+     * 修改密码
+     * @param empChangePwdDTO
+     */
+    void changePassword(EmpChangePwdDTO empChangePwdDTO);
 }

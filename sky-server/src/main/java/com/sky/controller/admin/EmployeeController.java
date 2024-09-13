@@ -1,11 +1,12 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.constant.MessageConstant;
+import com.sky.dto.EmpChangePwdDTO;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
-import com.sky.mapper.EmployeeMapper;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,5 +132,13 @@ public class EmployeeController {
         log.info("修改员工信息：{}", employeeDTO);
         employeeService.updateEmp(employeeDTO);
         return Result.success();
+    }
+
+    @PutMapping("/editPassword")
+    @ApiOperation("修改员工密码")
+    public Result<String> changeEmpPassword(@RequestBody EmpChangePwdDTO empChangePwdDTO){
+        log.info("修改员工密码：{}", empChangePwdDTO);
+        employeeService.changePassword(empChangePwdDTO);
+        return Result.success(MessageConstant.PASSWORD_EDIT_SUCCESS);
     }
 }

@@ -5,9 +5,9 @@
     <update id="updateStatus">
         UPDATE t_emp
         <set>
-            <if test="updateTime != null"> update_time = #{updateTime}, </if>
-            <if test="updateUser != null"> update_user = #{updateUser}, </if>
-            <if test="status != null"> status = #{status}, </if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="status != null">status = #{status},</if>
         </set>
         WHERE id = #{id}
     </update>
@@ -23,6 +23,13 @@
             <if test="updateUser != null">update_user = #{updateUser},</if>
         </set>
         WHERE id = #{id}
+    </update>
+    <update id="changePassword">
+        UPDATE t_emp
+        <set>
+            <if test="`password` != null">`password` = #{newPassword}</if>
+        </set>
+        WHERE id = #{empId}
     </update>
 
     <!--    分页查询-->

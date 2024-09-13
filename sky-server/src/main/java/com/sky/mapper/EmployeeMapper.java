@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.EmpChangePwdDTO;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
@@ -54,4 +55,19 @@ public interface EmployeeMapper {
      * @param emp 员工实体类
      */
     void updateUser(Employee emp);
+
+
+    /**
+     * 修改密码
+     * @param empChangePwdDTO
+     */
+    void changePassword(EmpChangePwdDTO empChangePwdDTO);
+
+    /**
+     * 根据id查询密码
+     * @param id
+     * @return 返回用户密码
+     */
+    @Select("select password from t_emp where id = #{id}")
+    String getPassword(Long id);
 }

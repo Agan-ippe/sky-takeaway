@@ -6,6 +6,7 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
+import com.sky.dto.EmpChangePwdDTO;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -13,15 +14,19 @@ import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
+import com.sky.handler.GlobalExceptionHandler;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import com.sky.utils.StringUtil;
 import com.sky.vo.QueryEmpVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -70,6 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO 员工操作的数据模型
      * @return
      */
@@ -101,7 +107,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 修改员工账号状态
-     * @param id 员工ID
+     *
+     * @param id     员工ID
      * @param status 账号状态
      */
     @Override
@@ -117,6 +124,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 根据ID查询员工信息
+     *
      * @param id id
      * @return QueryEmpVO
      */
@@ -127,6 +135,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 修改员工信息
+     *
      * @param employeeDTO 员工信息
      */
     @Override
@@ -137,6 +146,32 @@ public class EmployeeServiceImpl implements EmployeeService {
         emp.setUpdateTime(LocalDateTime.now());
         emp.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.updateUser(emp);
+    }
+
+    /**
+     * 重置密码
+     *
+     * @param empChangePwdDTO
+     */
+    @Override
+    public void changePassword(EmpChangePwdDTO empChangePwdDTO) {
+        String oldPassword = empChangePwdDTO.getOldPassword();
+        String password = employeeMapper.getPassword(BaseContext.getCurrentId());
+
+        if (!password.equals(DigestUtils.md5DigestAsHex(oldPassword.getBytes()))) {
+            throw new PasswordErrorException(MessageConstant.OLD_PASSWORD_ERROR);
+        }
+        if (empChangePwdDTO.getNewPassword().equals(oldPassword)) {
+            throw new PasswordErrorException(MessageConstant.NEW_PASSWORD_CANNOT_SAME_AS_OLD);
+        }
+        if (StringUtil.isEmpty(empChangePwdDTO.getNewPassword()) || StringUtil.isEmpty(oldPassword)) {
+            throw new PasswordErrorException(MessageConstant.PASSWORD_IS_NULL);
+        }
+
+        String newPassword = empChangePwdDTO.getNewPassword();
+        //md5加密
+        empChangePwdDTO.setNewPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
+        employeeMapper.changePassword(empChangePwdDTO);
     }
 
 }
