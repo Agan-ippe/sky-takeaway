@@ -76,17 +76,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     @Override
-    public void add(EmployeeDTO employeeDTO) {
+    public void insertEmp(EmployeeDTO employeeDTO) {
         Employee emp = new Employee();
         //将数据模型中的数据拷贝到实体对象中
         BeanUtils.copyProperties(employeeDTO, emp);
 
         emp.setStatus(StatusConstant.ENABLE);
         emp.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        emp.setCreateTime(LocalDateTime.now());
-        emp.setUpdateTime(LocalDateTime.now());
-        emp.setCreateUser(BaseContext.getCurrentId());
-        emp.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.addUser(emp);
     }
 
@@ -95,7 +91,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         //分页查询
         PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
 
-        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+        Page<Employee> page = employeeMapper.queryEmpPage(employeePageQueryDTO);
         long total = page.getTotal();
         List<Employee> result = page.getResult();
         return new PageResult(total, result);
@@ -112,7 +108,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee emp = Employee.builder()
                 .status(status)
                 .id(id)
-                .updateTime(LocalDateTime.now())
                 .build();
 
         employeeMapper.updateStatus(emp);
@@ -139,8 +134,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee emp = new Employee();
         //将数据模型中的数据拷贝到实体对象中
         BeanUtils.copyProperties(employeeDTO, emp);
-        emp.setUpdateTime(LocalDateTime.now());
-        emp.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.updateUser(emp);
     }
 
@@ -166,7 +159,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         String newPassword = empChangePwdDTO.getNewPassword();
         //md5加密
         empChangePwdDTO.setNewPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
-        employeeMapper.changePassword(empChangePwdDTO);
+        employeeMapper.updatePassword(empChangePwdDTO);
     }
 
 }

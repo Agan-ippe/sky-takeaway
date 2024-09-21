@@ -24,7 +24,7 @@
         </set>
         WHERE id = #{id}
     </update>
-    <update id="changePassword">
+    <update id="updatePassword">
         UPDATE t_emp
         <set>
             <if test="`password` != null">`password` = #{newPassword}</if>
@@ -33,7 +33,7 @@
     </update>
 
     <!--    分页查询-->
-    <select id="pageQuery" resultType="com.sky.entity.Employee">
+    <select id="queryEmpPage" resultType="com.sky.entity.Employee">
         SELECT * FROM t_emp
         <where>
             <if test="name != null and name != ''">

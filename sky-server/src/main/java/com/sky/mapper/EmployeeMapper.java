@@ -1,17 +1,15 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.annotation.AutoFill;
 import com.sky.dto.EmpChangePwdDTO;
-import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
+import com.sky.enumeration.OperationType;
 import com.sky.vo.QueryEmpVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-
-import java.util.List;
 
 @Mapper
 public interface EmployeeMapper {
@@ -31,18 +29,21 @@ public interface EmployeeMapper {
     @Insert("insert into `t_emp` (username, `name`,password, phone, sex, id_number, status, create_time, update_time, create_user, update_user) " +
             "values " +
             "(#{username}, #{name}, #{password}, #{phone}, #{sex}, #{idNumber}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
+    @AutoFill(value = OperationType.INSERT)
     void addUser(Employee employee);
 
     /**
      * 查询所有员工
+     * @param employeePageQueryDTO 查询条件
      * @return
      */
-    Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+    Page<Employee> queryEmpPage(EmployeePageQueryDTO employeePageQueryDTO);
 
     /**
      * 根据id修改员工账号
      * @param employee emp
      */
+    @AutoFill(value = OperationType.UPDATE)
     void updateStatus(Employee employee);
 
     @Select("select " +
@@ -54,6 +55,7 @@ public interface EmployeeMapper {
      * 更新员工信息
      * @param emp 员工实体类
      */
+    @AutoFill(value = OperationType.UPDATE)
     void updateUser(Employee emp);
 
 
@@ -61,7 +63,8 @@ public interface EmployeeMapper {
      * 修改密码
      * @param empChangePwdDTO
      */
-    void changePassword(EmpChangePwdDTO empChangePwdDTO);
+    @AutoFill(value = OperationType.UPDATE)
+    void updatePassword(EmpChangePwdDTO empChangePwdDTO);
 
     /**
      * 根据id查询密码

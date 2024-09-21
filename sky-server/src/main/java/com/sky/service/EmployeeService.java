@@ -26,7 +26,7 @@ public interface EmployeeService {
      * 新增员工
      * @param employeeDTO 员工操作的数据模型
      */
-    void add(EmployeeDTO employeeDTO);
+    void insertEmp(EmployeeDTO employeeDTO);
 
     /**
      * 分页查询员工
