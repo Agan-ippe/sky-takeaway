@@ -6,3 +6,8 @@ sky:
     database: sky_takeaway
     username: root
     password: 123456
+
+  giett:
+    access-token: b9284d75444e55a0507284d121ac60de
+    owner: Aip0_o
+    pero: imgs

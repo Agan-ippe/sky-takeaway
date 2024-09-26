@@ -6,12 +6,15 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.sky.constant.GiteeConstant;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Aip
@@ -19,33 +22,51 @@ import java.util.UUID;
  * @date 2024/9/21  17:31
  * @description 用于gitee图床工具类
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Slf4j
+@Data
 public class GiteeImgsUtil {
 
     /**
+     * 码云私人访问令牌
+     */
+    private String accessToken;
+
+    /**
+     * 码云个人空间名
+     */
+    private String owner;
+
+    /**
+     * 码云仓库路径
+     */
+    private String pero;
+
+    /**
      * 上传文件
-     * @param path 文件路径
      * @param file 目标文件
      * @return
      */
-    public static String upload(String path, MultipartFile file){
+    public String upload(MultipartFile file) {
 
-        String originalFilename = file.getOriginalFilename();
+        String path = file.getOriginalFilename();
         //文件名判空
-        if (originalFilename == null) {
+        if (path == null) {
             return null;
         }
 
-        String fileUrl = GiteeImgsUtil.createUploadFileUrl(path, originalFilename);
+        String fileUrl = this.createUploadFileUrl(path);
         // 封装请求参数
         Map<String, Object> map = null;
 
         try {
-            map = GiteeImgsUtil.getUploadBodyMap(file.getBytes());
+            map = this.getUploadBodyMap(file.getBytes());
         } catch (IOException e) {
             throw null;
         }
 
-        String jsonResult  = HttpUtil.post(fileUrl, map);
+        String jsonResult = HttpUtil.post(fileUrl, map);
         JSONObject jsonObject = JSONUtil.parseObj(jsonResult);
         // 提交失败
         if (jsonObject.getObj(GiteeConstant.CREATE_UPLOAD_JSON_RESULT_COMMIT) == null) {
@@ -62,9 +83,9 @@ public class GiteeImgsUtil {
      * @param bytes
      * @return
      */
-    private static Map<String, Object> getUploadBodyMap(byte[] bytes) {
+    private Map<String, Object> getUploadBodyMap(byte[] bytes) {
         HashMap<String, Object> bodyMap = new HashMap<>(3);
-        bodyMap.put("access_token", GiteeConstant.ACCESS_TOKEN);
+        bodyMap.put("access_token", accessToken);
         bodyMap.put("message", GiteeConstant.ADD_MESSAGE);
         bodyMap.put("content", Base64.encode(bytes));
         return bodyMap;
@@ -72,21 +93,20 @@ public class GiteeImgsUtil {
 
     /**
      * 创建上传文件的url
-     * @param path 文件路径
-     * @param originalFilename 文件名
+     * @param path 文件名
      * @return
      */
-    private static String createUploadFileUrl(String path, String originalFilename) {
+    private String createUploadFileUrl(String path) {
         // 获取文件格式
 //        String fileSuffix = getFileSuffix(originalFilename);
         // 拼接文件上传名
 //        String fileName = UUID.randomUUID().toString() + fileSuffix;
         // 拼接上传文件的url
         return String.format(GiteeConstant.API_CREATE_POST,
-                GiteeConstant.OWNER,
-                GiteeConstant.REPO,
-                path + originalFilename
-                );
+                owner,
+                pero,
+                path
+        );
     }
 
     /**
@@ -94,8 +114,8 @@ public class GiteeImgsUtil {
      * @param path
      * @return
      */
-    public static Boolean deleteFile(String path){
-        String deleteFileUrl = GiteeImgsUtil.getFileUrl(path);
+    public Boolean deleteFile(String path) {
+        String deleteFileUrl = this.getFileUrl(path);
         Map<String, Object> bodyMap = getDeleteBodyMap(path);
 
         // 发送delete请求
@@ -108,15 +128,15 @@ public class GiteeImgsUtil {
     /**
      * 封装删除请求体
      * 格式:https://gitee.com/api/v5/repos/Aip0_o/imgs/contents/text.txt
-     * ?access_token=b9284d75444e55a0507284d121ac60de
+     * ?access_token=bxxxxxxxxxxxxxxxe
      * &sha=0fcf9d3c90ecf6fb400cd3c2c207515b703c3c5c
      * &message=testDel
      * @param path 文件路径
      * @return
      */
-    private static Map<String, Object> getDeleteBodyMap(String path) {
+    private Map<String, Object> getDeleteBodyMap(String path) {
         HashMap<String, Object> map = new HashMap<>(3);
-        map.put("access_token", GiteeConstant.ACCESS_TOKEN);
+        map.put("access_token", accessToken);
         map.put("message", GiteeConstant.DEL_MESSAGE);
         map.put("sha", getSha(path));
         return map;
@@ -127,8 +147,8 @@ public class GiteeImgsUtil {
      * @param path 文件路径
      * @return
      */
-    private static Object getSha(String path) {
-        String fileUrl = GiteeImgsUtil.getFileUrl(path);
+    private Object getSha(String path) {
+        String fileUrl = this.getFileUrl(path);
         Map<String, Object> map = getFileBodyMap();
         String jsonResult = HttpUtil.get(fileUrl, map);
         JSONObject jsonObject = JSONUtil.parseObj(jsonResult);
@@ -140,13 +160,13 @@ public class GiteeImgsUtil {
 
     /**
      * 获取sha的请求体（获取仓库具体路径下的内容）
-     * https://gitee.com/api/v5/repos/Aip0_o/imgs/contents/text.txt?
-     * access_token=b9284d75444e55a0507284d121ac60de
+     * https://gitee.com/api/v5/repos/Aixxx/imgs/contents/text.txt?
+     * access_token=b92xxxxxxxxxxxxxxxxxxc60de
      * @return
      */
-    private static Map<String, Object> getFileBodyMap() {
+    private Map<String, Object> getFileBodyMap() {
         HashMap<String, Object> map = new HashMap<>(3);
-        map.put("access_token", GiteeConstant.ACCESS_TOKEN);
+        map.put("access_token", accessToken);
         return map;
 
     }
@@ -156,10 +176,10 @@ public class GiteeImgsUtil {
      * @param path
      * @return
      */
-    private static String getFileUrl(String path) {
-        return String.format(GiteeConstant.API_CREATE_POST,
-                GiteeConstant.OWNER,
-                GiteeConstant.REPO,
+    private String getFileUrl(String path) {
+        return String.format(accessToken,
+                owner,
+                pero,
                 path);
     }
 
@@ -167,7 +187,7 @@ public class GiteeImgsUtil {
      * 获取文件格式
      * @param originalFilename
      */
-    private static String getFileSuffix(String originalFilename) {
+    private String getFileSuffix(String originalFilename) {
         // 截取文件格式
         return originalFilename.contains(".") ? originalFilename.substring(originalFilename.lastIndexOf(".")) : null;
     }

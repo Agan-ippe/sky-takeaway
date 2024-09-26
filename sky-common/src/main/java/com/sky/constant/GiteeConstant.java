@@ -1,5 +1,9 @@
 package com.sky.constant;
 
+import com.sky.properties.AliOssProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
 /**
  * @author Aip
  * @version 1.0
@@ -7,26 +11,6 @@ package com.sky.constant;
  * @description 码云图床常量类
  */
 public class GiteeConstant {
-
-    /**
-     * 码云私人访问令牌
-     */
-    public static final String ACCESS_TOKEN = "b9284d75444e55a0507284d121ac60de";
-
-    /**
-     * 码云个人空间名
-     */
-    public static final String OWNER = "Aip0_o";
-
-    /**
-     * 码云仓库路径
-     */
-    public static final String REPO = "imgs";
-
-    /**
-     * 访问前缀
-     */
-    public static final String PRE = "https://gitee.com/" + OWNER + "/" + REPO + "/blob/master/";
 
     /**
      * 新建(POST)、获取(GET)、删除(DELETE)文件：()中指的是使用对应的请求方式
