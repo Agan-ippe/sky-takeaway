@@ -35,5 +35,6 @@ public class GiteeConstant {
 
     public static final String CREATE_UPLOAD_JSON_RESULT_CONTENT = "content";
     public static final String CREATE_UPLOAD_JSON_RESULT_CONTENT_DOWNLOAD_URL = "download_url";
+    public static final String CREATE_UPLOAD_JSON_RESULT_CONTENT_HTML_URL = "html_url";
     public static final String SHA = "sha";
 }

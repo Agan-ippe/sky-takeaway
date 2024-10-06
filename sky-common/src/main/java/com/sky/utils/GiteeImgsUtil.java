@@ -5,6 +5,8 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.sky.constant.GiteeConstant;
+import com.sky.constant.MessageConstant;
+import com.sky.exception.UploadFailedException;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -70,7 +72,7 @@ public class GiteeImgsUtil {
         JSONObject jsonObject = JSONUtil.parseObj(jsonResult);
         // 提交失败
         if (jsonObject.getObj(GiteeConstant.CREATE_UPLOAD_JSON_RESULT_COMMIT) == null) {
-            return null;
+            throw new UploadFailedException(MessageConstant.UPLOAD_FAILED);
         }
         // 提交成功，返回下载地址
         JSONObject content = JSONUtil.parseObj(jsonObject.getObj(GiteeConstant.CREATE_UPLOAD_JSON_RESULT_CONTENT));
