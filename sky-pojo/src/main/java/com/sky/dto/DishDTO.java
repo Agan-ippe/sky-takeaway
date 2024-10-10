@@ -1,6 +1,7 @@
 package com.sky.dto;
 
 import com.sky.entity.DishFlavor;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ApiModel("提交菜品信息模型")
 public class DishDTO implements Serializable {
 
     private Long id;

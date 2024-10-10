@@ -77,6 +77,4 @@ public class CategoryController {
         categoryService.updateCategory(categoryDTO);
         return Result.success();
     }
-
-
 }
