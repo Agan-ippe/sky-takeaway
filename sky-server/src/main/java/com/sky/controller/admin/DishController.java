@@ -30,9 +30,6 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
-    @Autowired
-    private GiteeImgsUtil giteeImgsUtil;
-
     @PostMapping
     @ApiOperation("新增菜品")
     public Result<String> insertDish(@RequestBody DishDTO dishDTO) {
@@ -81,6 +78,5 @@ public class DishController {
         log.info("根据id查询菜品:{}", id);
         return Result.success(dishService.queryDishAndFlavorById(id));
     }
-
 
 }
