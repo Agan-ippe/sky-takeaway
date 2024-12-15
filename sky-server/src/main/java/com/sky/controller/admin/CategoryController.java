@@ -1,6 +1,5 @@
 package com.sky.controller.admin;
 
-import com.github.pagehelper.PageHelper;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;

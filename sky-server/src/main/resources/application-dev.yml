@@ -7,6 +7,12 @@ sky:
     username: root
     password: 123456
 
+  redis:
+    host: 192.168.153.128
+    port: 6379
+    password: aip036
+    database: 1
+
   giett:
     access-token: b9284d75444e55a0507284d121ac60de
     owner: Aip0_o
