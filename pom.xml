@@ -31,6 +31,7 @@
         <jjwt>0.9.1</jjwt>
         <jaxb-api>2.3.1</jaxb-api>
         <poi>3.16</poi>
+        <WxJava>4.6.0</WxJava>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -128,6 +129,13 @@
                 <artifactId>wechatpay-apache-httpclient</artifactId>
                 <version>0.4.8</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>${WxJava}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

@@ -6,10 +6,10 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.DishVO;
-import nonapi.io.github.classgraph.utils.LogNode;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @author Aip
@@ -40,6 +40,13 @@ public interface DishMapper {
      * @return 菜品分页结果
      */
     Page<DishVO> queryDishPage(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
+     * 动态条件查询菜品
+     * @param dish
+     * @return
+     */
+    List<Dish> queryDishList(Dish dish);
 
     /**
      * 根据ID查询菜品

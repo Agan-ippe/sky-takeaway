@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
  * @date 2024/9/26  16:57
  * @description
  */
-@Configuration
 @Slf4j
+@Configuration
 public class GiteeConfiguration {
 
     @Bean

@@ -51,6 +51,22 @@
         ORDER BY t_dish.create_time DESC
     </select>
 
+    <select id="queryDishList" resultType="com.sky.entity.Dish">
+        SELECT * FROM t_dish
+        <where>
+            <if test="name != null">
+                `name` LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                AND `status` = #{status}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
     <delete id="deleteBatchByIds">
         DELETE FROM t_dish WHERE id IN
         <foreach collection="ids" open="(" close=")" separator="," item="id">
