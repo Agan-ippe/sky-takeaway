@@ -39,9 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void insertCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
-
         category.setStatus(StatusConstant.DISABLE);
-
         categoryMapper.insertCategory(category);
 
     }

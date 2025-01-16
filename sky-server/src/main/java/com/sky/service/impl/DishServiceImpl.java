@@ -89,6 +89,7 @@ public class DishServiceImpl implements DishService {
      * @param ids 菜品id
      */
     @Override
+    @Transactional
     public void deleteDishByID(Long... ids) {
         // 判断当前是否为起售菜品
         for (Long id : ids) {
@@ -177,5 +178,14 @@ public class DishServiceImpl implements DishService {
             dishVoList.add(dishVO);
         }
         return dishVoList;
+    }
+
+    @Override
+    public List<Dish> QueryDishListByCategoryId(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.queryDishList(dish);
     }
 }

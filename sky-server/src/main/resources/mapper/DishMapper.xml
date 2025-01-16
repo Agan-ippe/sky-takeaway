@@ -37,15 +37,18 @@
 
     <select id="queryDishPage" resultType="com.sky.vo.DishVO">
         SELECT t_dish.* ,
-        t_category.name AS category_name
+        t_category.`name` AS category_name
         FROM t_dish LEFT JOIN t_category
         ON t_dish.category_id = t_category.id
         <where>
             <if test="name != null">
-                t_dish.name LIKE CONCAT('%', #{name}, '%'),
+                t_dish.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                AND t_dish.category_id = #{categoryId}
             </if>
             <if test="status != null">
-                AND t_dish.status = #{status}
+                AND t_dish.`status` = #{status}
             </if>
         </where>
         ORDER BY t_dish.create_time DESC

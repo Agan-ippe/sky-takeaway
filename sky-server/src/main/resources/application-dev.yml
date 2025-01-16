@@ -18,9 +18,6 @@ sky:
     owner: Aip0_o
     pero: imgs
 
-#  wechat:
-#    appid: wx225967b795f9f509
-#    secret: 5824b8574435f77826327f6f90ee85c1
 wx:
   miniapp:
     configs:

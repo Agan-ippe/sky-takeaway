@@ -6,7 +6,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author Aip
@@ -33,7 +35,6 @@ public class UserShopController {
     @GetMapping("/status")
     @ApiOperation("用户端获取店铺的营业状态")
     public Result<Integer> getStatus(){
-        // TODO 优化常量
         Integer shopStatus = (Integer) redisTemplate.opsForValue().get(KEY);
         log.info("获取当前店铺状态为: {}", shopStatus == 1 ? "营业中" : "休息中");
         return Result.success(shopStatus);

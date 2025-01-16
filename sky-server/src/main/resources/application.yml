@@ -61,10 +61,6 @@ sky:
     owner: ${sky.giett.owner}
     pero: ${sky.giett.pero}
 
-#  wechat:
-#    appid: ${sky.wechat.appid}
-#    secret: ${sky.wechat.secret}
-
 wx:
   miniapp:
     configs:

@@ -60,4 +60,6 @@ public interface DishService {
      * @param dish 菜品信息
      */
     List<DishVO> listWithFlavor(Dish dish);
+
+    List<Dish> QueryDishListByCategoryId(Long categoryId);
 }
