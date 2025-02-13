@@ -47,4 +47,8 @@ public class ShoppingCart implements Serializable {
     private String image;
 
     private LocalDateTime createTime;
+
+    public ShoppingCart(Long id) {
+        this.id = id;
+    }
 }
